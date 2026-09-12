@@ -1,0 +1,1 @@
+pub const FILE_NOT_FOUND: &str = "File not found";
