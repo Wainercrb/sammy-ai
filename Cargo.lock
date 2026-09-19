@@ -5540,6 +5540,9 @@ dependencies = [
  "anyhow",
  "dotenvy",
  "rig",
+ "serde",
+ "serde_json",
+ "thiserror",
  "tokio",
 ]
 
