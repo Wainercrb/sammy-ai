@@ -1,46 +1,19 @@
-mod shared;
 mod tools;
-// use crate::shared::file_system;
-
-// const DIRECTORY_PATH: &str = "C:\\oper\\me\\ministack-microservices";
-
-// fn main() {
-//     let files: Vec<String> = file_system::list_files_in_directory(DIRECTORY_PATH);
-//     print!("{:?}", files);
-// }
 
 use anyhow::Result;
 use rig::prelude::*;
 use rig::providers::openrouter;
 use std::io::{self, Write};
 
-pub use tools::add::AddOperation;
-pub use tools::multiply::MultiplyOperation;
-pub use tools::divide::DivideOperation;
-
+use crate::tools::add::AddOperation;
+use crate::tools::divide::DivideOperation;
+use crate::tools::multiply::MultiplyOperation;
 
 #[tokio::main]
 async fn main() -> Result<(), anyhow::Error> {
     dotenvy::dotenv().ok();
 
     let client = openrouter::Client::from_env()?;
-
-    // let agent = client
-    //     .agent("nvidia/nemotron-3-ultra-550b-a55b:free")
-    //     .preamble("You are a helpful assistant.")
-    //     .build();
-
-    // // Send a prompt and await the model's reply.
-    // let response = agent.prompt("What is the Rust programming language?").await?;
-
-    // println!("{response}");
-
-    // Ok(())
-
-    // let agent = client
-    //     .agent("nvidia/nemotron-3-ultra-550b-a55b:free")
-    //     .preamble("You are a helpful assistant.")
-    //     .build();
 
     let agent = client
         .agent("nvidia/nemotron-3-ultra-550b-a55b:free")
@@ -54,13 +27,11 @@ async fn main() -> Result<(), anyhow::Error> {
 
     let mut input = String::new();
 
-    println!("Please enter some text!");
+    println!("Enter a calculation request:");
 
-    io::stdout().flush().expect("Failed to flush stdout");
+    io::stdout().flush()?;
 
-    io::stdin()
-        .read_line(&mut input)
-        .expect("Failed to read the line");
+    io::stdin().read_line(&mut input)?;
 
     let result = agent.prompt(input).await?;
 
